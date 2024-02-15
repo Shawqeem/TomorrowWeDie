@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class DialogueSystem : MonoBehaviour
 {
+    public event EventHandler OnDialogueFinish;
+
     [Header("UI")]
     [SerializeField] private TMP_Text textBox, nameBox;
 
@@ -42,7 +45,7 @@ public class DialogueSystem : MonoBehaviour
         string line;
         if (index < textList.Count && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
         {
-            if(textFinished)
+            if (textFinished)
             {
                 textSpeed = defaultTextSpeed;
                 line = textList[index];
@@ -69,6 +72,7 @@ public class DialogueSystem : MonoBehaviour
         else if (index >= textList.Count)
         {
             gameObject.SetActive(false);
+            OnDialogueFinish?.Invoke(this, EventArgs.Empty);
         }
     }
 
